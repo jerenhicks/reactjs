@@ -15,3 +15,13 @@ tomcat
 
 what to install in vagrant:
 bower
+
+
+Commands
+
+gulp bower - Will install everything that is needed. If this hangs, run this command:
+ git config --global url."https://".insteadOf git://
+
+ gulp - development
+
+ gulp production - production

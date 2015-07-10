@@ -11,6 +11,8 @@ var less = require('gulp-less');
 var path = require('path');
 var minifyCSS = require('gulp-minify-css');
 var bower = require('gulp-bower');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 var path = {
     HTML: 'src/index.html',
@@ -49,6 +51,9 @@ gulp.task('buildJS', function() {
         debug: true,
         cache: {}, packageCache: {}, fullPaths: true
     })  .transform(reactify)
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish))
+        .pipe(jshint.reporter('fail'))
         .bundle()
         .pipe(source('main.js'))
         .pipe(gulp.dest('./dist/src/'));
@@ -58,6 +63,9 @@ gulp.task('buildJSMin', function() {
     return browserify({
         entries: [path.ENTRY_POINT]
     })  .transform(reactify)
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish))
+        .pipe(jshint.reporter('fail'))
         .bundle()
         .pipe(source('main.js'))
         .pipe(streamify(uglify()))
