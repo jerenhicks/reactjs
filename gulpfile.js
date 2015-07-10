@@ -25,9 +25,8 @@ var path = {
     BOWER_DIR: './bower_components'
 };
 
-gulp.task('bower', function() { 
-    return bower()
-        .pipe(gulp.dest(path.BOWER_DIR));
+gulp.task('bower', function() {
+    return bower().pipe(gulp.dest(path.BOWER_DIR));
 });
 
 gulp.task('clean', function() {
