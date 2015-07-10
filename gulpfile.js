@@ -2,15 +2,12 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
-var watchify = require('watchify');
 var reactify = require('reactify');
 var streamify = require('gulp-streamify');
 var del = require('del');  // Deletes files.
 var runSequence = require('run-sequence');
 var less = require('gulp-less');
-var path = require('path');
 var minifyCSS = require('gulp-minify-css');
-var bower = require('gulp-bower');
 
 var path = {
     HTML: 'src/index.html',
@@ -22,12 +19,8 @@ var path = {
     ENTRY_POINT: './src/js/main.js',
     JS: ['src/js/**/*.js'],
     LESS: ['src/css/*.less'],
-    BOWER_DIR: './bower_components'
+    NODE_DIR: './node_modules'
 };
-
-gulp.task('bower', function() {
-    return bower().pipe(gulp.dest(path.BOWER_DIR));
-});
 
 gulp.task('clean', function() {
     return del(['dist']);
@@ -70,13 +63,13 @@ gulp.task('watch', function() {
 });
 
 gulp.task('buildLess', function(){
-    return gulp.src(['./src/css/styles.less', './bower_components/bootstrap/less/bootstrap.less'])
+    return gulp.src(['./src/css/styles.less', './node_modules/bootstrap/less/bootstrap.less'])
         .pipe(less())
         .pipe(gulp.dest('./dist/css'));
 });
 
 gulp.task('buildLessMin', function(){
-    return gulp.src(['./src/css/styles.less', './bower_components/bootstrap/less/bootstrap.less'])
+    return gulp.src(['./src/css/styles.less', './node_modules/bootstrap/less/bootstrap.less'])
         .pipe(less())
         .pipe(minifyCSS())
         //possibly rename?
