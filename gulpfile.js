@@ -19,8 +19,8 @@ var path = {
     DEST: 'dist',
     DEST_BUILD: 'dist/build',
     DEST_SRC: 'dist/src',
-    ENTRY_POINT: './src/js/app.js',
-    JS: ['src/js/*.js'],
+    ENTRY_POINT: './src/js/main.js',
+    JS: ['src/js/**/*.js'],
     LESS: ['src/css/*.less'],
     BOWER_DIR: './bower_components'
 };
@@ -65,8 +65,8 @@ gulp.task('buildJSMin', function() {
 });
 
 gulp.task('watch', function() {
-    return gulp.watch(path.LESS, ['buildLess']);
-    return gulp.watch(path.JS, ['buildReact']);
+    gulp.watch(path.LESS, ['buildLess']);
+    return gulp.watch(path.JS, ['buildJS']);
 });
 
 gulp.task('buildLess', function(){
