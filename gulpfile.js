@@ -10,7 +10,7 @@ var runSequence = require('run-sequence');
 var less = require('gulp-less');
 var path = require('path');
 var minifyCSS = require('gulp-minify-css');
-var mainBowerFiles = require('main-bower-files');
+var bower = require('gulp-bower');
 
 var path = {
     HTML: 'src/index.html',
@@ -21,14 +21,13 @@ var path = {
     DEST_SRC: 'dist/src',
     ENTRY_POINT: './src/js/app.js',
     JS: ['src/js/*.js'],
-    LESS: ['src/css/*.less']
+    LESS: ['src/css/*.less'],
+    BOWER_DIR: './bower_components'
 };
 
-gulp.task('bower', function() {
-   return gulp.src(mainBowerFiles(), {
-       base: 'bower_components'
-   })
-    .pipe(gulp.dest('./dist/lib'))
+gulp.task('bower', function() { 
+    return bower()
+        .pipe(gulp.dest(path.BOWER_DIR));
 });
 
 gulp.task('clean', function() {
@@ -45,7 +44,7 @@ gulp.task('startServer', function() {
     return require('./express.server');
 });
 
-gulp.task('buildReact', function() {
+gulp.task('buildJS', function() {
     return browserify({
         entries: [path.ENTRY_POINT],
         debug: true,
@@ -56,7 +55,7 @@ gulp.task('buildReact', function() {
         .pipe(gulp.dest('./dist/src/'));
 });
 
-gulp.task('buildReactMin', function() {
+gulp.task('buildJSMin', function() {
     return browserify({
         entries: [path.ENTRY_POINT]
     })  .transform(reactify)
@@ -78,7 +77,7 @@ gulp.task('buildLess', function(){
 });
 
 gulp.task('buildLessMin', function(){
-    return gulp.src('./src/css/styles.less')
+    return gulp.src(['./src/css/styles.less', './bower_components/bootstrap/less/bootstrap.less'])
         .pipe(less())
         .pipe(minifyCSS())
         //possibly rename?
@@ -86,9 +85,9 @@ gulp.task('buildLessMin', function(){
 });
 
 gulp.task('default', function (cb) {
-    runSequence('clean', 'copyHTML', 'buildReact', 'buildLess', 'watch', 'startServer', cb);
+    runSequence('clean', 'copyHTML', 'buildJS', 'buildLess', 'watch', 'startServer', cb);
 });
 
 gulp.task('production', function (cb) {
-    runSequence('clean', 'copyHTML', 'buildReactMin', 'buildLessMin', cb);
+    runSequence('clean', 'copyHTML', 'buildJSMin', 'buildLessMin', cb);
 });
