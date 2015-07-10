@@ -14,3 +14,4 @@ chrome
 tomcat
 
 what to install in vagrant:
+bower
