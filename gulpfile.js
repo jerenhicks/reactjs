@@ -1,11 +1,15 @@
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
-var htmlreplace = require('gulp-html-replace');
+//var htmlreplace = require('gulp-html-replace');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify');
-var streamify = require('gulp-streamify');
+//var streamify = require('gulp-streamify');
+var del = require('del');  // Deletes files.
+var runSequence = require('run-sequence');
+var less = require('gulp-less');
+var path = require('path');
 
 var path = {
     HTML: 'src/index.html',
@@ -14,67 +18,97 @@ var path = {
     DEST: 'dist',
     DEST_BUILD: 'dist/build',
     DEST_SRC: 'dist/src',
-    ENTRY_POINT: './src/js/app.js'
+    ENTRY_POINT: './src/js/app.js',
+    JS: ['src/js/*.js'],
+    LESS: ['src/css/*.less']
 };
 
-gulp.task('copy', function(){
-    gulp.src(path.HTML)
-        .pipe(gulp.dest(path.DEST));
+gulp.task('clean', function() {
+    return del(['dist']);
 });
 
-gulp.task('replaceHTMLsrc', function(){
-    gulp.src(path.HTML)
-        .pipe(htmlreplace({
-            'js': 'src/' + path.OUT
-        }))
+gulp.task('copyHTML', function(){
+    return gulp.src(path.HTML)
         .pipe(gulp.dest(path.DEST));
+
 });
+
+//gulp.task('replaceHTMLsrc', function(){
+//    gulp.src(path.HTML)
+//        .pipe(htmlreplace({
+//            'js': 'src/' + path.OUT
+//        }))
+//        .pipe(gulp.dest(path.DEST));
+//});
 
 gulp.task('startServer', function() {
-    require('./express.server');
+    return require('./express.server');
 });
 
-gulp.task('watch', ['replaceHTMLsrc', 'copy', 'startServer'], function() {
-    // gulp.watch(path.HTML, ['copy']);
-    gulp.watch(path.HTML, ['replaceHTMLsrc']);
+//gulp.task('watch', function() {
+//    gulp.watch(path.HTML, ['replaceHTMLsrc']);
+//
+//    var watcher  = watchify(browserify({
+//        entries: [path.ENTRY_POINT],
+//        transform: [reactify],
+//        debug: true,
+//        cache: {}, packageCache: {}, fullPaths: true
+//    }));
+//
+//    return watcher.on('update', function () {
+//        watcher.bundle()
+//            .pipe(source(path.OUT))
+//            .pipe(gulp.dest(path.DEST_SRC));
+//        console.log('Updated');
+//    })
+//        .bundle()
+//        .pipe(source(path.OUT))
+//        .pipe(gulp.dest(path.DEST_SRC));
+//});
 
-    var watcher  = watchify(browserify({
+gulp.task('buildReact', function() {
+    return browserify({
         entries: [path.ENTRY_POINT],
-        transform: [reactify],
         debug: true,
         cache: {}, packageCache: {}, fullPaths: true
-    }));
-
-    return watcher.on('update', function () {
-        watcher.bundle()
-            .pipe(source(path.OUT))
-            .pipe(gulp.dest(path.DEST_SRC));
-        console.log('Updated');
-    })
+    })  .transform(reactify)
         .bundle()
-        .pipe(source(path.OUT))
-        .pipe(gulp.dest(path.DEST_SRC));
+        .pipe(source('main.js'))
+        .pipe(gulp.dest('./dist/src/'));
 });
 
-gulp.task('build', function(){
-    browserify({
-        entries: [path.ENTRY_POINT],
-        transform: [reactify]
-    })
-        .bundle()
-        .pipe(source(path.MINIFIED_OUT))
-        .pipe(streamify(uglify({file:path.MINIFIED_OUT })))
-        .pipe(gulp.dest(path.DEST_BUILD));
+gulp.task('watch', function() {
+    return gulp.watch(path.LESS, ['buildLess']);
+    return gulp.watch(path.JS, ['buildReact']);
 });
 
-gulp.task('replaceHTML', function(){
-    gulp.src(path.HTML)
-        .pipe(htmlreplace({
-            'js': 'build/' + path.MINIFIED_OUT
-        }))
-        .pipe(gulp.dest(path.DEST));
+//gulp.task('build', function(){
+//    browserify({
+//        entries: [path.ENTRY_POINT],
+//        transform: [reactify]
+//    })
+//        .bundle()
+//        .pipe(source(path.MINIFIED_OUT))
+//        .pipe(streamify(uglify({file:path.MINIFIED_OUT })))
+//        .pipe(gulp.dest(path.DEST_BUILD));
+//});
+//
+//gulp.task('replaceHTML', function(){
+//    gulp.src(path.HTML)
+//        .pipe(htmlreplace({
+//            'js': 'build/' + path.MINIFIED_OUT
+//        }))
+//        .pipe(gulp.dest(path.DEST));
+//});
+
+//gulp.task('production', ['clean', 'replaceHTML', 'build']);
+
+gulp.task('buildLess', function(){
+    return gulp.src('./src/css/styles.less')
+        .pipe(less())
+        .pipe(gulp.dest('./dist/css'));
 });
 
-gulp.task('production', ['replaceHTML', 'build']);
-
-gulp.task('default', ['watch']);
+gulp.task('default', function (cb) {
+    runSequence('clean', 'copyHTML', 'buildReact', 'buildLess', 'watch', 'startServer', cb);
+});
