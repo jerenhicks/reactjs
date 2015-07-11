@@ -1,5 +1,5 @@
-var Parent = require('./parent');
-var HelloWorld = require('./components/hello.world.component');
+var Header = require('./components/header/header.component.js');
+var Search = require('./components/container/search.component.js');
 
-React.render(<Parent />, document.getElementById('app'));
-React.render(<HelloWorld />, document.getElementById('helloworld'));
+React.render(<Header />, document.getElementById('header'));
+React.render(<Search />, document.getElementById('container'));
