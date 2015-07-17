@@ -19,7 +19,8 @@ var path = {
     ENTRY_POINT: './src/js/main.js',
     JS: ['src/js/**/*.js'],
     LESS: ['src/css/*.less'],
-    NODE_DIR: './node_modules'
+    NODE_DIR: './node_modules',
+    BOOTSTRAP_LOCATION: './node_modules/bootstrap/dist/js/bootstrap.js'
 };
 
 gulp.task('clean', function() {
@@ -44,6 +45,17 @@ gulp.task('buildJS', function() {
     })  .transform(reactify)
         .bundle()
         .pipe(source('main.js'))
+        .pipe(gulp.dest('./dist/src/'));
+});
+
+gulp.task('buildThirdPartyJS', function() {
+    var javascript = new browserify({
+        debug:true,
+        fullPaths:true
+    });
+    javascript.add(path.BOOTSTRAP_LOCATION);
+    javascript.bundle()
+        .pipe(source('thirdparty.js'))
         .pipe(gulp.dest('./dist/src/'));
 });
 
@@ -77,7 +89,7 @@ gulp.task('buildLessMin', function(){
 });
 
 gulp.task('default', function (cb) {
-    runSequence('clean', 'copyHTML', 'buildJS', 'buildLess', 'watch', 'startServer', cb);
+    runSequence('clean', 'copyHTML', 'buildJS', 'buildThirdPartyJS', 'buildLess', 'watch', 'startServer', cb);
 });
 
 gulp.task('production', function (cb) {

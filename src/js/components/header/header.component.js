@@ -1,12 +1,4 @@
 var Header = React.createClass({
-    getInitialState: function() {
-        return {
-            counter: 0
-        }
-    },
-    increment: function() {
-        this.setState({ counter: this.state.counter + 1})
-    },
     render: function() {
         return <div>
             <nav className="navbar navbar-default navbar-fixed-top">
