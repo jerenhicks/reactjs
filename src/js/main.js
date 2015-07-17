@@ -1,3 +1,4 @@
+var React = require('react');
 var Header = require('./components/header/header.component.js');
 var Search = require('./components/container/search.component.js');
 

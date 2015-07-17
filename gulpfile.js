@@ -20,7 +20,8 @@ var path = {
     JS: ['src/js/**/*.js'],
     LESS: ['src/css/*.less'],
     NODE_DIR: './node_modules',
-    BOOTSTRAP_LOCATION: './node_modules/bootstrap/dist/js/bootstrap.js'
+    BOOTSTRAP_LOCATION: './node_modules/bootstrap/dist/js/bootstrap.js',
+    JQUERY_LOCATION: './node_modules/jquery/dist/jquery.js'
 };
 
 gulp.task('clean', function() {
@@ -53,8 +54,8 @@ gulp.task('buildThirdPartyJS', function() {
         debug:true,
         fullPaths:true
     });
-    javascript.add(path.BOOTSTRAP_LOCATION);
-    javascript.bundle()
+    javascript.add([path.BOOTSTRAP_LOCATION]);
+    return javascript.bundle()
         .pipe(source('thirdparty.js'))
         .pipe(gulp.dest('./dist/src/'));
 });
