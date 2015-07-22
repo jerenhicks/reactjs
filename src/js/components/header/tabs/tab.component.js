@@ -23,7 +23,6 @@ var Tab = React.createClass({
         }
     },
     handleOnClick: function() {
-        console.log('on click going to ' + this.props.url);
         this.setState({active: !this.state.active});
         radio('hideOtherTabs').broadcast(this.state.id);
     },
