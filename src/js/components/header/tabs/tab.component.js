@@ -12,19 +12,19 @@ var Tab = React.createClass({
         return {active: activeField, id: uuid.v1()};
     },
     componentDidMount: function() {
-        radio('hideOtherTabs').subscribe(this.handleShowEvent);
+        radio('tabSelected').subscribe(this.handleShowEvent);
     },
     componentWillUnmount: function() {
-        radio('hideOtherTabs').unsubscribe(this.handleShowEvent);
+        radio('tabSelected').unsubscribe(this.handleShowEvent);
     },
     handleShowEvent: function(data) {
-        if (data != this.state.id) {
+        if (data.id != this.state.id) {
             this.setState({active: false});
         }
     },
     handleOnClick: function() {
         this.setState({active: !this.state.active});
-        radio('hideOtherTabs').broadcast(this.state.id);
+        radio('tabSelected').broadcast({id: this.state.id, name: this.props.name});
     },
     render: function() {
         var classes = cx({

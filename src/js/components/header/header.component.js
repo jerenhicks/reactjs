@@ -9,7 +9,7 @@ var Header = React.createClass({
                     <ul className="nav navbar-nav">
                         <Tab name='Home' url='/home' default='true'/>
                         <Tab name='link1' url='/something'/>
-                        <Tab name='link1' url='/test'/>
+                        <Tab name='link2' url='/test'/>
                     </ul>
                 </div>
             </nav>
