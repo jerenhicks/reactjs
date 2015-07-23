@@ -2,17 +2,18 @@ var React = require('react');
 var radio = require('radio');
 var Link1Content = require('./content/link.one.content.component');
 var Link2Content = require('./content/link.two.content.component');
-var Home = require('./content/search.content.component');
+var SearchResultsContent = require('./content/search/search.results.content.component.js');
+var Home = require('./content/search/search.content.component.js');
 
 var Header = React.createClass({
     getInitialState: function() {
         return {content: <Home />};
     },
     componentDidMount: function() {
-        radio('tabSelected').subscribe(this.handleTabSelected);
+        radio('changeContents').subscribe(this.handleTabSelected);
     },
     componentWillUnmount: function() {
-        radio('tabSelected').unsubscribe(this.handleTabSelected);
+        radio('changeContents').unsubscribe(this.handleTabSelected);
     },
     handleTabSelected: function(data) {
         var newContent;
@@ -21,6 +22,8 @@ var Header = React.createClass({
             newContent = <Link1Content />;
         } else if (data.name === 'link2') {
             newContent = <Link2Content />;
+        } else if (data.name === 'results') {
+            newContent = <SearchResultsContent results={data.data}/>;
         } else {
             newContent = <Home />;
         }
