@@ -2,8 +2,9 @@ var React = require('react');
 var radio = require('radio');
 var Link1Content = require('./content/link.one.content.component');
 var Link2Content = require('./content/link.two.content.component');
-var SearchResultsContent = require('./content/search/search.results.content.component.js');
+var SearchResultsContent = require('./content/search/results/search.results.content.component.js');
 var Home = require('./content/search/search.content.component.js');
+var Recipe = require('./content/recipe/recipe.content.component.js');
 
 var Header = React.createClass({
     getInitialState: function() {
@@ -24,6 +25,8 @@ var Header = React.createClass({
             newContent = <Link2Content />;
         } else if (data.name === 'results') {
             newContent = <SearchResultsContent results={data.data}/>;
+        } else if (data.name ==='recipe') {
+            newContent = <Recipe id={data.data}/>;
         } else {
             newContent = <Home />;
         }

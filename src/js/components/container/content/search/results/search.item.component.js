@@ -1,9 +1,10 @@
 var React = require('react');
-var Rating = require('../../../misc/rating.component');
+var Rating = require('../../../../misc/rating.component.js');
+var radio = require('radio');
 
 var SearchItemComponent = React.createClass({
     handleOnClick: function() {
-        alert('hi');
+        radio('changeContents').broadcast({name: 'recipe', data: this.props.data.id});
     },
     render: function() {
         return <div>

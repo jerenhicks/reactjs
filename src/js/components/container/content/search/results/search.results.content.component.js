@@ -1,6 +1,6 @@
 var React = require('react');
 var _ = require('underscore');
-var SearchItem = require('./search.item.component');
+var SearchItem = require('./search.item.component.js');
 
 var SearchContentComponent = React.createClass({
     render: function() {
