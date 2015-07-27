@@ -1,4 +1,5 @@
 var React = require('react');
+var Rating = require('../../../misc/rating.component');
 
 var SearchItemComponent = React.createClass({
     handleOnClick: function() {
@@ -14,7 +15,7 @@ var SearchItemComponent = React.createClass({
                         <p>{this.props.data.description}</p>
                     </div>
                     <div className="col-sm-2">
-                        Stars Here
+                        <Rating rating={this.props.data.rating}/>
                     </div>
                 </div>
             </div>

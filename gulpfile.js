@@ -89,10 +89,15 @@ gulp.task('buildLessMin', function(){
         .pipe(gulp.dest('./dist/css'));
 });
 
+gulp.task('moveImages', function() {
+    return gulp.src(['./src/assets/**/*'])
+        .pipe(gulp.dest('./dist/assets'));
+});
+
 gulp.task('default', function (cb) {
-    runSequence('clean', 'copyHTML', 'buildJS', 'buildThirdPartyJS', 'buildLess', 'watch', 'startServer', cb);
+    runSequence('clean', 'copyHTML', 'buildJS', 'buildThirdPartyJS', 'buildLess', 'moveImages', 'watch', 'startServer', cb);
 });
 
 gulp.task('production', function (cb) {
-    runSequence('clean', 'copyHTML', 'buildJSMin', 'buildLessMin', cb);
+    runSequence('clean', 'copyHTML', 'buildJSMin', 'buildLessMin', 'moveImages', cb);
 });
