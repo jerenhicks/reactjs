@@ -1,6 +1,6 @@
 var React = require('react');
 var radio = require('radio');
-var Link1Content = require('./content/link.one.content.component');
+var AddRecipe = require('./content/recipe/add/add.recipe.component.js');
 var Link2Content = require('./content/link.two.content.component');
 var SearchResultsContent = require('./content/search/results/search.results.content.component.js');
 var Home = require('./content/search/search.content.component.js');
@@ -19,8 +19,8 @@ var Header = React.createClass({
     handleTabSelected: function(data) {
         var newContent;
         //this check is bad, find a better way of doing this down the road. Perhaps pass the url?
-        if (data.name === 'link1') {
-            newContent = <Link1Content />;
+        if (data.name === 'Add Recipe') {
+            newContent = <AddRecipe />;
         } else if (data.name === 'link2') {
             newContent = <Link2Content />;
         } else if (data.name === 'results') {
