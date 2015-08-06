@@ -1,6 +1,7 @@
 var React = require('react');
 var Rating = require('../../../../misc/rating.component.js');
 var radio = require('radio');
+var Properties = require('../../../../../properties/properties');
 
 var SearchItemComponent = React.createClass({
     handleOnClick: function() {
@@ -10,7 +11,7 @@ var SearchItemComponent = React.createClass({
         return <div>
             <div className="well clickable" onClick={this.handleOnClick}>
                 <div className="row">
-                    <div className="col-sm-2"><img src="http://i.imgur.com/RLiDK.png" alt="..." className="img-thumbnail"/></div>
+                    <div className="col-sm-2"><img src={Properties.dataservices + this.props.data.imageLocation} alt="..." className="img-thumbnail"/></div>
                     <div className="col-sm-8">
                         {this.props.data.name}
                         <p>{this.props.data.description}</p>
