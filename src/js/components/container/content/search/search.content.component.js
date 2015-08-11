@@ -2,29 +2,42 @@ var React = require('react');
 var radio = require('radio');
 var $ = require('jquery');
 var Properties = require('../../../../properties/properties');
+var Error = require('../../../misc/error.component');
 
 var SearchContentComponent = React.createClass({
+    getInitialState: function() {
+        return {error: false};
+    },
     handleOnClick: function() {
+        var component = this;
         $.get( Properties.dataservices + "/recipe", function( results ) {
             radio('changeContents').broadcast({name: 'results', data: results});
         })
-        .fail(function() {
-                alert('there is an error');
+        .done(function() {
+            component.setState({error: false});
+        })
+        .fail(function(error) {
+            component.props.errorMsg = 'some kind of error msg';
+            component.setState({error: true});
         });
     },
     render: function() {
-        return <div>
-            <div className="jumbotron">
-                <div className="row">
-                    <div className="input-group">
-                        <input type="text" className="form-control" placeholder="Search for..."/>
-                        <span className="input-group-btn">
-                            <button className="btn btn-default" onClick={this.handleOnClick} type="button">Go!</button>
-                        </span>
+        if (this.state.error) {
+            return <Error errorMsg={this.props.errorMsg}/>
+        } else {
+            return <div>
+                <div className="jumbotron">
+                    <div className="row">
+                        <div className="input-group">
+                            <input type="text" className="form-control" placeholder="Search for..."/>
+                            <span className="input-group-btn">
+                                <button className="btn btn-default" onClick={this.handleOnClick} type="button">Go!</button>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>;
+            </div>;
+        }
     }
 });
 

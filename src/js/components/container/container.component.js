@@ -35,7 +35,7 @@ var Header = React.createClass({
     },
     render: function() {
         return <div>
-            <div className="row container">
+            <div className="row container-fluid">
                 <div className="col-sm-2 container-margin"></div>
                 <div className="col-sm-8">{this.state.content}</div>
                 <div className="col-sm-2 container-margin"></div>

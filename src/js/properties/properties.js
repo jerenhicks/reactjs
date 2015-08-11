@@ -1,5 +1,5 @@
 var Properties = {
-    dataservices : 'http://localhost:8081/reactservices'
+    dataservices : 'http://localhost:8080/reactservices'
 };
 
 module.exports = Properties;
