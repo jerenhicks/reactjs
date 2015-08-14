@@ -2,6 +2,7 @@ var React = require('react');
 var Loading = require('../../../../misc/loading.component');
 var Properties = require('../../..//../../properties/properties');
 var Error = require('../../../../misc/error.component');
+var Ingredient = require('./ingredient.selection.component');
 
 var LinkOneContentComponent = React.createClass({
     getInitialState: function() {
@@ -28,12 +29,12 @@ var LinkOneContentComponent = React.createClass({
             processData: false,
             data: data
         })
-        .done(function () {
-            component.setState({complete: true});
-        })
-        .fail(function() {
-            component.setState({error: true});
-        });
+            .done(function () {
+                component.setState({complete: true});
+            })
+            .fail(function() {
+                component.setState({error: true});
+            });
     },
     render: function() {
         if (this.state.error) {
@@ -58,6 +59,7 @@ var LinkOneContentComponent = React.createClass({
                         <input type="file" id="exampleInputFile" ref="recipeimage"/>
                         <p className="help-block">Example block-level help text here.</p>
                     </div>
+                    <Ingredient />
                     <button className="btn btn-default" onClick={this.handleOnClick}>Submit</button>
                 </form>
             </div>;

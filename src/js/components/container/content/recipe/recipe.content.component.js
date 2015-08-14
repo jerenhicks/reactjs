@@ -16,9 +16,9 @@ var RecipeContentComponent = React.createClass({
         $.get( Properties.dataservices + "/recipe/" + this.props.id, function( result ) {
             component.setState({loading: false, recipe: result});
         })
-        .fail(function() {
-            component.setState({error: true});
-        });
+            .fail(function() {
+                component.setState({error: true});
+            });
     },
     render: function() {
         if (this.state.error) {

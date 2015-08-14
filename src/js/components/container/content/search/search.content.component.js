@@ -10,16 +10,16 @@ var SearchContentComponent = React.createClass({
     },
     handleOnClick: function() {
         var component = this;
-        $.get( Properties.dataservices + "/recipe", function( results ) {
+        $.get( Properties.dataservices + "/recipe/search", {query : this.refs.query.getDOMNode().value}, function( results ) {
             radio('changeContents').broadcast({name: 'results', data: results});
         })
-        .done(function() {
-            component.setState({error: false});
-        })
-        .fail(function(error) {
-            component.props.errorMsg = 'some kind of error msg';
-            component.setState({error: true});
-        });
+            .done(function() {
+                component.setState({error: false});
+            })
+            .fail(function(error) {
+                component.props.errorMsg = 'some kind of error msg';
+                component.setState({error: true});
+            });
     },
     render: function() {
         if (this.state.error) {
@@ -29,7 +29,7 @@ var SearchContentComponent = React.createClass({
                 <div className="jumbotron">
                     <div className="row">
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Search for..."/>
+                            <input type="text" className="form-control" placeholder="Search for..." ref="query"/>
                             <span className="input-group-btn">
                                 <button className="btn btn-default" onClick={this.handleOnClick} type="button">Go!</button>
                             </span>

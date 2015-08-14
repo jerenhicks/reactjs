@@ -23,8 +23,10 @@ var Tab = React.createClass({
         }
     },
     handleOnClick: function() {
-        this.setState({active: !this.state.active});
-        radio('tabSelected').broadcast({id: this.state.id, name: this.props.name});
+        if (!this.state.active) {
+            this.setState({active: !this.state.active});
+            radio('tabSelected').broadcast({id: this.state.id, name: this.props.name});
+        }
         radio('changeContents').broadcast({name: this.props.name});
     },
     render: function() {
